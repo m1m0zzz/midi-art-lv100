@@ -74,7 +74,7 @@
 </script>
 
 <main>
-	<h1>MIDI art (wip)</h1>
+	<h1>MIDI Art Lv. 100</h1>
 	<p>1. Upload your image.</p>
 
 	<input
@@ -92,7 +92,7 @@
 	<p>width: [ 4bar ], note length: [ 1/16 ]</p>
 	<p>height: [ C1 ] to [ G8 ]</p> -->
 
-	<p><a bind:this={link} href="#" download style="display: none;">Download MIDI</a></p>
+	<p><a bind:this={link} download style="display: none;">Download MIDI</a></p>
 
 	<p>2. Open midi file in your DAW.</p>
 </main>
