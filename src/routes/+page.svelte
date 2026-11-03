@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { grayScaleImageData, pickColor, toImage } from "$lib/image";
-	import { pitchToMidi } from "$lib/midi";
-	import { onMount } from "svelte";
-	import { Midi } from "@tonejs/midi"
+	import { grayScaleImageData, pickColor, toImage } from '$lib/image';
+	import { pitchToMidi } from '$lib/midi';
+	import { onMount } from 'svelte';
+	import { Midi } from '@tonejs/midi';
 
 	let canvas: HTMLCanvasElement;
 	let input: HTMLInputElement;
@@ -10,10 +10,10 @@
 	let link: HTMLAnchorElement;
 
 	let pixelSizeX = 16 * 4;
-	let pixelSizeY = pitchToMidi("G8") - pitchToMidi("C3") + 1;
+	let pixelSizeY = pitchToMidi('G8') - pitchToMidi('C3') + 1;
 
 	onMount(() => {
-		ctx = canvas.getContext("2d");
+		ctx = canvas.getContext('2d');
 	});
 
 	const uploadImage = () => {
@@ -21,7 +21,7 @@
 		reader.onload = (e) => {
 			const imageUrl = e.target!.result;
 			const img = new Image();
-			if (typeof imageUrl === "string") img.src = imageUrl;
+			if (typeof imageUrl === 'string') img.src = imageUrl;
 
 			img.onload = () => {
 				if (!ctx) return;
@@ -30,7 +30,7 @@
 				ctx.drawImage(img, 0, 0);
 
 				const src = ctx.getImageData(0, 0, img.width, img.height);
-        const grayed = grayScaleImageData(ctx, src);
+				const grayed = grayScaleImageData(ctx, src);
 				ctx.putImageData(grayed, 0, 0);
 
 				toImage(grayed).then((i) => {
@@ -45,27 +45,27 @@
 					const track = midi.addTrack();
 
 					const duration = 1 / 8;
-					const midiMax = pitchToMidi("G8");
+					const midiMax = pitchToMidi('G8');
 
 					for (let y = 0; y < imgData.height; y++) {
 						for (let x = 0; x < imgData.width; x++) {
 							const velocity = pickColor(imgData, x, y)[0] / 256;
 							track.addNote({
-								midi : midiMax - y,
-								time : x * duration * 2,
+								midi: midiMax - y,
+								time: x * duration * 2,
 								duration: duration * 2,
 								velocity: Math.max(velocity, 1 / 127)
-							})
+							});
 						}
 					}
 
-					const blob = new Blob([midi.toArray().buffer], { type: "audio/midi"});
+					const blob = new Blob([midi.toArray().buffer], { type: 'audio/midi' });
 
 					// complete task!
 					link.href = URL.createObjectURL(blob);
-					link.download = "output.mid";
-					link.style.display = "block";
-				})
+					link.download = 'output.mid';
+					link.style.display = 'block';
+				});
 			};
 		};
 
@@ -92,6 +92,8 @@
 	<p>width: [ 4bar ], note length: [ 1/16 ]</p>
 	<p>height: [ C1 ] to [ G8 ]</p> -->
 
+	<!-- href は MIDI の生成後に JS から設定する -->
+	<!-- svelte-ignore a11y-missing-attribute -->
 	<p><a bind:this={link} download style="display: none;">Download MIDI</a></p>
 
 	<p>2. Open midi file in your DAW.</p>
