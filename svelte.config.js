@@ -24,7 +24,7 @@ const config = {
 		}),
 
 		paths: {
-			base: dev ? '' : process.env.BASE_PATH,
+			base: dev ? '' : process.env.BASE_PATH
 		}
 	}
 };
